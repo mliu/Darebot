@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="en" ng-app="app">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -10,22 +10,145 @@
         <!-- <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
         <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="vendor/angular/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-controller="DareController as vm">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+        <nav class="navbar navbar-default navbar-inverse">
             <div class="container-fluid text-center">
                 <div class="title">DARE PARTY!</div>
             </div>
         </nav>
 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-xs-4 col-xs-offset-4 text-center">
+                            <h2><strong>PLAYERS</strong></h2>
+                        </div>
+                        <div class="col-xs-4 text-right" style="padding-top: 18px;">
+                            <button class="btn btn-primary" ng-click="vm.addingPlayer = true;">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Dare Count</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="vm.addingPlayer">
+                                <form name="playerForm" ng-submit="playerForm.$valid && vm.addPlayer()">
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="Name" ng-model="vm.playerName" required>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success" ng-disabled="playerForm.$invalid">
+                                            Submit
+                                        </button>
+                                        <button type="button" class="btn btn-danger" ng-click="vm.playerName = ''; vm.addingPlayer = false">
+                                            X
+                                        </button>
+                                    </td>
+                                </form>
+                            </tr>
+                            <tr ng-repeat="player in vm.players">
+                                <td>{{ player.name }}</td>
+                                <td>{{ player.dareCount }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-default">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-default" ng-hide="player.disabled" ng-click="vm.disablePlayer($index)">
+                                        <i class="fa fa-ban text-danger"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-default active" ng-show="player.disabled" ng-click="vm.disablePlayer($index)">
+                                        <i class="fa fa-ban text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-2">
+                    <div class="clock-container">
+                        <div class="text-center">
+                            <p id="timer">00:00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-xs-4 col-xs-offset-4 text-center">
+                            <h2><strong>DARES</strong></h2>
+                        </div>
+                        <div class="col-xs-4 text-right" style="padding-top: 18px;" ng-click="vm.addingDare = true;">
+                            <button class="btn btn-primary">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th># of Participants</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="vm.addingDare">
+                                <form name="dareForm" ng-submit="dareForm.$valid && vm.addDare()">
+                                    <td>
+                                        <input type="text" class="form-control" placeholder="Name" ng-model="vm.dareName" required>
+                                        <input type="text" class="form-control" placeholder="Description" ng-model="vm.dareDescription" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" placeholder="Participants" ng-model="vm.dareParticipants" required>
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success" ng-disabled="dareForm.$invalid">
+                                            Submit
+                                        </button>
+                                        <button type="button" class="btn btn-danger" ng-click="vm.dareName = ''; vm.dareDescription = ''; vm.dareParticipants = 0; vm.addingDare = false">
+                                            X
+                                        </button>
+                                    </td>
+                                </form>
+                            </tr>
+                            <tr ng-repeat="dare in vm.dares track by $index">
+                                <td>{{ dare.description }}</td>
+                                <td>{{ dare.participants }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-default">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+
+        <script src="js/app.module.js"></script>
+        <script src="js/dare.controller.js"></script>
+        <script src="js/defaults.js"></script>
     </body>
 </html>

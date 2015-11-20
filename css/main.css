@@ -1,5 +1,23 @@
+body {
+}
+
 .navbar .title {
   color: #fff;
   font-weight: bold;
   font-size: 50px;
+}
+
+.clock-container {
+  padding-top: 200px;
+  border-radius: 10px;
+}
+  .clock-container #timer {
+    font-size: 6vw;
+    font-weight: bold;
+    position: fixed;
+  }
+
+table tbody {
+  max-height: 600px !important;
+  overflow-y: scroll;
 }
